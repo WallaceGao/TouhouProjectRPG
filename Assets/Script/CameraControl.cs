@@ -7,20 +7,18 @@ public class CameraControl : MonoBehaviour
     [SerializeField]
     float CameraZoomDis;
     [SerializeField]
-    bool RotateAroundPLay = false;
-    [SerializeField]
     float RotationSpeed = 5.0f;
     [SerializeField]
     public Transform playerTransform;
     [SerializeField]
     float smoothFactor = 0.5f;
     private Vector3 cameraOffset;
-    bool lookAtPlayer = true;
+    bool RotateAroundPlay = false;
 
     private void Awake()
     {
         cameraOffset = transform.position - playerTransform.position;
-        RotateAroundPLay = false;
+        RotateAroundPlay = false;
     }
 
 
@@ -34,7 +32,7 @@ public class CameraControl : MonoBehaviour
         Zoom();
         Rotation();
 
-        if(lookAtPlayer|| RotateAroundPLay)
+        if ( RotateAroundPlay)
         {
             transform.LookAt(playerTransform);
         }
@@ -45,13 +43,13 @@ public class CameraControl : MonoBehaviour
         //rotation
         if (Input.GetMouseButtonDown(1))
         {
-            RotateAroundPLay = true;
+            RotateAroundPlay = true;
         }
         if (Input.GetMouseButtonUp(1))
         {
-            RotateAroundPLay = false;
+            RotateAroundPlay = false;
         }
-        if (RotateAroundPLay)
+        if (RotateAroundPlay)
         {
             Quaternion camTurnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * RotationSpeed, Vector3.up);
             cameraOffset = camTurnAngle * cameraOffset;
