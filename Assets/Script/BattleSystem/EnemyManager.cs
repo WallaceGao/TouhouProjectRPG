@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemeyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    List<Enemy> enemies = new List<Enemy>();
+
+    private void Awake()
     {
-        
+        ServiceLocator.Register<EnemyManager>(this);
+        foreach (var enemy in GetComponentsInChildren<Enemy>())
+        {
+            enemies.Add(enemy);
+        }
     }
 }

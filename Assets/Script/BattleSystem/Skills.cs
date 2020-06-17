@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skills : MonoBehaviour
 {
     [SerializeField]
-    string Name;
+    string name;
     [SerializeField]
     int range;
     [SerializeField]
@@ -13,5 +13,5 @@ public class Skills : MonoBehaviour
     [SerializeField]
     float cost;
 
-
+    public string Name { get { return name; } }
 }
