@@ -24,7 +24,6 @@ public class PlayerCharacter : Character
             AbilitySetting();
         }
 
-        
         //if (Input.GetMouseButtonDown(0))
         //{
         //    // draw street line from the camera's mouse position to where I click
