@@ -12,6 +12,5 @@ public class Skills : MonoBehaviour
     float damage;
     [SerializeField]
     float cost;
-
     public string Name { get { return name; } }
 }

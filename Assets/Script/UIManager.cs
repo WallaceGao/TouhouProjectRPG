@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public event System.Action OnMove;
     public Button moveButton;
-    public PlayerCharacter character;
+    public Character character;
     [SerializeField]
     Transform skillList;
     [SerializeField]
@@ -19,7 +19,8 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         ServiceLocator.Register<UIManager>(this);
-        OnMove += character.MoveNextTile;
+        //
+        OnMove += character.StarMove;
         moveButton.onClick.AddListener(OnMove.Invoke);
         skillButton.onClick.AddListener(DisplaySkill);
     }
