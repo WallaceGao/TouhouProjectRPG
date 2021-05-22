@@ -5,14 +5,42 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
 
-    List<Character> enemies = new List<Character>();
+    [SerializeField] private List<GameObject> enemies = new List<GameObject>();
+    [SerializeField] private TileMap tileMap;
+    [SerializeField] private GameObject soundManager;
 
     private void Awake()
     {
-        ServiceLocator.Register<EnemyManager>(this);
-        foreach (var enemy in GetComponentsInChildren<Character>())
+        Transform location = transform;
+        foreach (var enemy in enemies)
         {
-            enemies.Add(enemy);
+            Instantiate(enemy, location.position, Quaternion.identity);
+            enemy.GetComponent<Character>().map.Equals(tileMap);
+            enemy.GetComponent<Character>().soundManager.Equals(soundManager);
+            enemy.GetComponent<Character>().SetStartTileX = 1;
+            enemy.GetComponent<Character>().SetStartTileY = 3;
+            enemy.GetComponent<Character>().Awake();
         }
+    }
+
+
+    private void Update()
+    {
+         
+    }
+
+    private void CharacterDie(int index)
+    {
+
+    }
+
+    private void CharacterMove()
+    {
+
+    }
+
+    private void Attack()
+    {
+
     }
 }

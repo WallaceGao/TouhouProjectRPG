@@ -5,7 +5,8 @@ using System.Linq;
 
 public class TileMap : MonoBehaviour
 {
-    public GameObject selctedUnit;
+    public GameObject selectUnit;
+    [SerializeField] private GameObject[] enemyUnits;
     //List<Node> currentPath = null;
     public TileType[] tileTypes;
 
@@ -20,9 +21,15 @@ public class TileMap : MonoBehaviour
     private void Start()
     {
         //Setup the selectedUnit
-        selctedUnit.GetComponent<Character>().tileX = (int)selctedUnit.transform.position.x;
-        selctedUnit.GetComponent<Character>().tileY = (int)selctedUnit.transform.position.y;
-        selctedUnit.GetComponent<Character>().map = this;
+        //selectUnit.GetComponent<Character>().tileX = (int)selectUnit.transform.position.x;
+        //selectUnit.GetComponent<Character>().tileY = (int)selectUnit.transform.position.y;
+
+        foreach (var enemy in enemyUnits)
+        {
+            enemy.GetComponent<Character>().map = this;
+        }
+
+        selectUnit.GetComponent<Character>().map = this;
 
         //Allocate our map tiles
         tiles = new int[mapSizeX, mapSizeY];
@@ -39,21 +46,6 @@ public class TileMap : MonoBehaviour
         }
 
         //test edge
-        tiles[0, 1] = 1;
-        tiles[1, 2] = 1;
-
-        tiles[4, 2] = 1;
-        tiles[4, 3] = 1;
-        tiles[4, 4] = 1;
-        tiles[4, 5] = 1;
-        tiles[4, 6] = 1;
-        tiles[4, 7] = 1;
-
-        tiles[2, 3] = 1;
-        tiles[2, 4] = 1;
-        tiles[1, 7] = 1;
-        tiles[1, 8] = 1;
-        tiles[1, 9] = 1;
 
         //visual prefabs
         GenerateMapVisual();
@@ -122,19 +114,9 @@ public class TileMap : MonoBehaviour
 
     public void MoveSelectedUnitTo(int x, int y)
     {
-        //selctedUnit.GetComponent<Character>().tileX = x;
-        //selctedUnit.GetComponent<Character>().tileY = y;
-        //if (y % 2 == 0)
-        //{
-        //    selctedUnit.transform.position = TileCoordToWorldCoord(x,y);
-        //}
-        //else
-        //{
-        //    selctedUnit.transform.position = TileCoordToWorldCoord(x, y);
-        //}
         //clear the path
         
-        selctedUnit.GetComponent<Character>().currentPath = null;
+        selectUnit.GetComponent<Character>().currentPath = null;
 
         if(UnitCanEnterTile(x,y) == false)
         {
@@ -146,7 +128,7 @@ public class TileMap : MonoBehaviour
         Dictionary<Node, Node> prev = new Dictionary<Node, Node>();
         List<Node> unvisted = new List<Node>();
         // serup the "Q"
-        Node source = graph[selctedUnit.GetComponent<Character>().tileX, selctedUnit.GetComponent<Character>().tileY];
+        Node source = graph[selectUnit.GetComponent<Character>().tileX, selectUnit.GetComponent<Character>().tileY];
         Node target = graph[x, y];
         dist[source] = 0;
         prev[source] = null;
@@ -204,7 +186,12 @@ public class TileMap : MonoBehaviour
             curr = prev[curr];
         }
         currentPath.Reverse();
-        selctedUnit.GetComponent<Character>().currentPath = currentPath;
+        selectUnit.GetComponent<Character>().currentPath = currentPath;
+    }
+
+    public void SetSelectUnit(GameObject gameObject)
+    {
+        selectUnit = gameObject;
     }
 
     void GeneratePathfindingGraph()

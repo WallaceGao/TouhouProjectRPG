@@ -12,7 +12,7 @@ public class ClickbleTile : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!map.selctedUnit.GetComponent<Character>().GetIsMove)
+        if (!map.selectUnit.GetComponent<Character>().GetIsMove)
         {
             // check if Click UI
             if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
@@ -22,7 +22,7 @@ public class ClickbleTile : MonoBehaviour
                 float timeSinceLastClick = Time.time - lastClickTime;
                 if (timeSinceLastClick <= doubleClickTime)
                 {
-                    map.selctedUnit.GetComponent<Character>().StarMove();
+                    map.selectUnit.GetComponent<Character>().StarMove();
                 }
                 lastClickTime = Time.time;
             }

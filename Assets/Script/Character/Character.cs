@@ -6,7 +6,13 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     //character's ability
+
     [SerializeField] private string name;
+    [SerializeField] private int startTileX = 0;
+    public int SetStartTileX { set {startTileX = value; } }
+    [SerializeField] private int startTileY = 0;
+    public int SetStartTileY { set {startTileY = value; } }
+
     public int tileX;
     public int tileY;
     public List<Node> currentPath = null;
@@ -15,28 +21,30 @@ public class Character : MonoBehaviour
     [SerializeField] private float _rotaSpeed = 0;
     [SerializeField] AnimationStateController animation;
     [SerializeField] private string WalkSound;
-    private int hp { get; set; }
     private bool isDead { get; set; }
     private List<Skills> skills = new List<Skills>();
     public List<Skills> Skills { get { return skills; } }
+    [SerializeField] private int hp;
     [SerializeField] private GameObject skillHolder;
     [SerializeField] private Race.Type type;
     [SerializeField] private int maxHp = 0;
     [SerializeField] private int speed = 0;
     [SerializeField] private int attack = 0;
     [SerializeField] private int defence = 0;
-
+    [SerializeField] private HealthBar healthBar;
     [SerializeField] private AudioClip footstep;
-    [SerializeField] private GameObject soundManager;
-     
+    public GameObject soundManager;
+    private AudioSource audioSourceManager;
+
     private Vector3 _targetDirection;
     private bool _isMove = false;
     public bool GetIsMove { get { return _isMove; } }
     private float remainingMovement = 0.0f;
 
-    public virtual void Awake() 
+    public void Awake() 
     {
-        soundManager.GetComponent<AudioSource>().clip = footstep;
+        audioSourceManager = GameObject.Find("SoundManager").GetComponent<AudioSource>();
+        audioSourceManager.clip = footstep;
 
         hp = maxHp;
         isDead = false;
@@ -45,18 +53,17 @@ public class Character : MonoBehaviour
             skills.Add(skill);
         }
         _isMove = false;
+        SetStarPosition(startTileX, startTileY);
+
+        hp = maxHp;
+        healthBar.SetMaxHealth(maxHp);
     }
 
-    private void Start()
-    {
-           
-    }
-
-    public virtual void Update()
+    public void Update()
     {
         if (isDead)
         {
-            return;
+            Destroy(this);
         }
 
         if (currentPath != null)
@@ -73,16 +80,25 @@ public class Character : MonoBehaviour
 
         if (_isMove)
         {
+            audioSourceManager.Play();
             //FindObjectOfType<SoundManager>().Play(WalkSound);
             MoveNextTile();
         }
         else
         {
+            audioSourceManager.Stop();
             //FindObjectOfType<SoundManager>().Stop(WalkSound);
         }
 
-        transform.rotation = Quaternion.LookRotation(_targetDirection);
-        
+        if (_targetDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(_targetDirection);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            takeDamage(5);
+        }
     }
 
     public void MoveNextTile()
@@ -130,6 +146,14 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void SetStarPosition(int starX, int starY)
+    {
+        //now grab the new first node and move ise to that position
+        tileX = starX;
+        tileY = starY;
+        transform.position = map.TileCoordToWorldCoord(starX, starY);
+    }
+
     public void StarMove()
     {
         if (!_isMove)
@@ -137,6 +161,18 @@ public class Character : MonoBehaviour
             _isMove = true;
             remainingMovement = speed;
             animation.SetRun();
+        }
+    }
+
+    public void takeDamage(int damage)
+    {
+        if (hp > 0)
+        {
+            hp -= damage; 
+        }
+        if (hp <= 0)
+        {
+            isDead = true;
         }
     }
 

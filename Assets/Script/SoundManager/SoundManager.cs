@@ -29,7 +29,6 @@ public class SoundManager : MonoBehaviour
 
     private void Update()
     {
-        Play("walk");
     }
 
     public void Play(string name)
