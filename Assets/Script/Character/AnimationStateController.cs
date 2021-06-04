@@ -20,4 +20,14 @@ public class AnimationStateController: MonoBehaviour
     {
         animator.SetBool("Run", false);
     }
+
+    public void Fly()
+    {
+        animator.SetBool("Fly", true);
+    }
+
+    public void Land()
+    {
+        animator.SetBool("Lan", false);
+    }
 }

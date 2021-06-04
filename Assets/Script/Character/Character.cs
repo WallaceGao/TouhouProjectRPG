@@ -6,13 +6,13 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     //character's ability
+    BlueDragonSkill _skill;
 
     [SerializeField] private string name;
     [SerializeField] private int startTileX = 0;
     public int SetStartTileX { set {startTileX = value; } }
     [SerializeField] private int startTileY = 0;
     public int SetStartTileY { set {startTileY = value; } }
-
     public int tileX;
     public int tileY;
     public List<Node> currentPath = null;
@@ -22,8 +22,8 @@ public class Character : MonoBehaviour
     [SerializeField] AnimationStateController animation;
     [SerializeField] private string WalkSound;
     private bool isDead { get; set; }
-    private List<Skills> skills = new List<Skills>();
-    public List<Skills> Skills { get { return skills; } }
+    //private List<Skills> skills = new List<Skills>();
+    //public List<Skills> Skills { get { return skills; } }
     [SerializeField] private int hp;
     [SerializeField] private GameObject skillHolder;
     [SerializeField] private Race.Type type;
@@ -39,19 +39,25 @@ public class Character : MonoBehaviour
     private Vector3 _targetDirection;
     private bool _isMove = false;
     public bool GetIsMove { get { return _isMove; } }
+    public bool SetIsMove { set { _isMove = value; } }
     private float remainingMovement = 0.0f;
+    private bool _isFinishAction = false;
+    public bool GetFinishAction { get { return _isFinishAction; } }
+    public bool SetFinishAction { set { _isFinishAction = value; } }
 
     public void Awake() 
     {
+        _skill = new BlueDragonSkill(); 
+
         audioSourceManager = GameObject.Find("SoundManager").GetComponent<AudioSource>();
         audioSourceManager.clip = footstep;
 
         hp = maxHp;
         isDead = false;
-        foreach (var skill in skillHolder.GetComponentsInChildren<Skills>())
-        {
-            skills.Add(skill);
-        }
+        //foreach (var skill in skillHolder.GetComponentsInChildren<Skills>())
+        //{
+        //    skills.Add(skill);
+        //}
         _isMove = false;
         SetStarPosition(startTileX, startTileY);
 
@@ -64,6 +70,11 @@ public class Character : MonoBehaviour
         if (isDead)
         {
             Destroy(this);
+        }
+
+        if (_isFinishAction)
+        {
+            return;
         }
 
         if (currentPath != null)
@@ -125,11 +136,13 @@ public class Character : MonoBehaviour
             {
                 remainingMovement -= map.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
                 currentPath.RemoveAt(0);
+                //Finish move
                 if (remainingMovement <= 0)
                 {
                     remainingMovement = 0;
                     _isMove = false;
                     animation.SetIdle();
+                    _isFinishAction = true;
                 }
             }
 
@@ -142,6 +155,7 @@ public class Character : MonoBehaviour
                 remainingMovement = 0;
                 _isMove = false;
                 animation.SetIdle();
+                _isFinishAction = true;
             }
         }
     }
@@ -174,6 +188,11 @@ public class Character : MonoBehaviour
         {
             isDead = true;
         }
+    }
+
+    public void Attack()
+    {
+        _skill.Ability();
     }
 
 }

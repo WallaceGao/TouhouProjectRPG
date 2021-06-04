@@ -20,7 +20,7 @@ public class ClickbleTile : MonoBehaviour
                 // Debug.Log(tileX," ",tileY);
                 map.MoveSelectedUnitTo(tileX, tileY);
                 float timeSinceLastClick = Time.time - lastClickTime;
-                if (timeSinceLastClick <= doubleClickTime)
+                if (timeSinceLastClick <= doubleClickTime && !map.selectUnit.GetComponent<Character>().GetFinishAction)
                 {
                     map.selectUnit.GetComponent<Character>().StarMove();
                 }

@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public event System.Action OnMove;
     public Button moveButton;
-    public Character character;
+    public GameObject selectCharacter;
+    public PlayerManager playermanager;
     [SerializeField]
     Transform skillList;
     [SerializeField]
@@ -19,14 +19,12 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         ServiceLocator.Register<UIManager>(this);
-        //
-        OnMove += character.StarMove;
-        moveButton.onClick.AddListener(OnMove.Invoke);
         skillButton.onClick.AddListener(DisplaySkill);
     }
 
     public void DisplaySkill()
     {
+        //delate 
         if (isSkillButtonClick)
         {
             foreach (var GO in skillList.gameObject.GetComponentsInChildren<Button>())
@@ -36,15 +34,23 @@ public class UIManager : MonoBehaviour
             isSkillButtonClick = false;
             return;
         }
-        List<Skills> skills = character.Skills;
-        int count = 0;
-        foreach (var skill in skills)
-        {
-            GameObject GO = Instantiate(skillButtonPrefab, skillList);
-            GO.transform.position = new Vector3(GO.transform.position.x, GO.transform.position.y - count * 30, GO.transform.position.z);
-            GO.GetComponent<Button>().GetComponentInChildren<Text>().text = skill.Name;
-            count++;
-        }
-        isSkillButtonClick = true;
+        //Careat all skill
+        //List<Skills> skills = selectCharacter.GetComponent<Character>().Skills;
+        //int count = 0;
+        //foreach (var skill in skills)
+        //{
+        //    GameObject GO = Instantiate(skillButtonPrefab, skillList);
+        //    GO.transform.position = new Vector3(GO.transform.position.x, GO.transform.position.y - count * 30, GO.transform.position.z);
+        //    GO.GetComponent<Button>().GetComponentInChildren<Text>().text = skill.Name;
+        //    //GO.GetComponent<Button>().onClick.Invoke();
+        //    count++;
+        //}
+        //isSkillButtonClick = true;
+    }
+
+    public void SetSelectCharacter(GameObject gameObject)
+    {
+        selectCharacter = gameObject;
+        DisplaySkill();
     }
 }

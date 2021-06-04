@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skills : MonoBehaviour
+
+public abstract class Skill
 {
-    [SerializeField]
-    string name;
-    [SerializeField]
-    int range;
-    [SerializeField]
-    float damage;
-    [SerializeField]
-    float cost;
-    public string Name { get { return name; } }
+    //public event System.Action fly;
+    [SerializeField] protected string _name;
+    [SerializeField] protected int _range;
+    [SerializeField] protected float _damage;
+    [SerializeField] protected float _cost;
+    public string Name { get { return _name; } }
+
+    public abstract void Ability();
+
 }

@@ -7,6 +7,7 @@ public class Selectable : MonoBehaviour
     [SerializeField] private GameObject selectedObject;
     [SerializeField] private GameObject hoveredObject;
     [SerializeField] private TileMap mTileMap;
+    [SerializeField] private UIManager mUIManager;
 
     // Update is called once per frame
     void Update()
@@ -31,6 +32,7 @@ public class Selectable : MonoBehaviour
         {
             selectedObject = hoveredObject;
             mTileMap.SetSelectUnit(selectedObject);
+            mUIManager.SetSelectCharacter(selectedObject);
         }
     }
 
