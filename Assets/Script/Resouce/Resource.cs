@@ -13,6 +13,7 @@ public class Resource : MonoBehaviour
     [SerializeField] int _Amount;
     [SerializeField] int _totalHealth;
     [SerializeField] int _currentHealth;
+    [SerializeField] PlayerManager _playerManager;
 
     private void Awake()
     {
@@ -23,6 +24,15 @@ public class Resource : MonoBehaviour
     {
         if (_currentHealth <= 0)
         {
+            if (_resourceType == ResourceType.Stone)
+            {
+                _playerManager.GetStone(_Amount);
+            }
+            else
+            {
+                _playerManager.GetWood(_Amount);
+            }
+
             Destroy(this);
         }
     }

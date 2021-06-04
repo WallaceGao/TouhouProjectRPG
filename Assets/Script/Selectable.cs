@@ -6,7 +6,7 @@ public class Selectable : MonoBehaviour
 {
     [SerializeField] private GameObject selectedObject;
     [SerializeField] private GameObject hoveredObject;
-    [SerializeField] private GameObject gameOPbject;
+    [SerializeField] private GameObject gameObject;
     [SerializeField] private TileMap mTileMap;
     [SerializeField] private UIManager mUIManager;
 
