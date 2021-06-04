@@ -45,6 +45,9 @@ public class Character : MonoBehaviour
     public bool GetFinishAction { get { return _isFinishAction; } }
     public bool SetFinishAction { set { _isFinishAction = value; } }
 
+    [SerializeField] private bool _CanGetResouce;
+    public bool GetResouce { get { return _CanGetResouce; } }
+
     public void Awake() 
     {
         _skill = new BlueDragonSkill(); 
